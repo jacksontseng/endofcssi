@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+  </head>
+  <body>
+    <h3><center>My Google Maps Demo</center></h3>
+    <div id="map"></div>
+    <button onclick="get_position()"> Get Position</button>
+    <script>
+    var map, marker;
+      function initMap() {
+        var uluru = {lat: 47.703877, lng: -122.062499};
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: 47.703877, lng: -122.062499}
+        });
+        marker = new google.maps.Marker({
+          position: uluru,
+          animation: google.maps.Animation.DROP,
+          draggable: true,
+          map: map
+        });
+      marker.addListener('click', toggleBounce);
+}
+  //       var marker = new google.maps.Marker({
+  //   position: myLatLng,
+  //   map: map,
+  //   title: 'Hello World!'
+  // });
+
+function toggleBounce() {
+if (marker.getAnimation() !== null) {
+  marker.setAnimation(null);
+} else {
+  marker.setAnimation(google.maps.Animation.BOUNCE);
+}
+}
+  function get_position() {
+    var p = {'lat': marker.position.lat(), 'lng': marker.position.lng()};
+    s = (JSON.stringify(p));
+    $.post('/postposition',s)
+  }
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCig64FiB1ZHYlxB8y4QDm9rbNveIPm0Lw&callback=initMap">
+    </script>
+    <a href="/"> return home</a>
+  </body>
+</html>
